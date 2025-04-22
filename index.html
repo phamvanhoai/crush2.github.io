@@ -11,13 +11,15 @@
       margin: 0;
       background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%);
       color: #e2e8f0;
-      font-family: 'Courier New', monospace;
+      font-family: monospace, 'Courier New', sans-serif;
       overflow-x: hidden !important;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     .container {
       position: relative;
@@ -99,9 +101,9 @@
       overflow-x: hidden;
     }
     @media (max-width: 640px) {
-      .code-line { font-size: 0.85rem; }
+      .code-line { font-size: 0.8rem; }
       .container { padding: 0.75rem; }
-      .btn-glow, .btn-secondary { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
+      .btn-glow, .btn-secondary { padding: 0.6rem 1.2rem; font-size: 0.8rem; }
       #code-editor { padding: 1rem; }
       #code-lines { max-width: 100%; overflow-x: hidden; }
     }
@@ -171,6 +173,7 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = '#f472b6';
         ctx.font = `${fontSize}px monospace`;
+        console.log('Drawing canvas with font:', ctx.font);
 
         for (let i = 0; i < drops.length; i++) {
           const text = chars.charAt(Math.floor(Math.random() * chars.length));
@@ -189,6 +192,7 @@
     // Animate code lines with GSAP
     try {
       const codeLines = document.querySelectorAll('.code-line');
+      console.log('Found code lines:', codeLines.length);
       codeLines.forEach((line, index) => {
         gsap.to(line, {
           opacity: 1,
