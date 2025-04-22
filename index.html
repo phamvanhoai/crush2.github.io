@@ -3,105 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lời tỏ tình gửi Loan 💖</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+  <title>🌸 Điều Muốn Nói Với Loan 🌸</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(120deg, #ffe6f0, #fff8e1);
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
       overflow-x: hidden;
-    }
-    h1, h2 {
-      font-family: 'Great Vibes', cursive;
     }
     .container {
       text-align: center;
       padding: 60px 20px;
-      animation: fadeIn 3s ease-in-out;
     }
-    .heart-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      overflow: hidden;
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      color: #ff4081;
+      animation: zoomIn 1.5s ease-in-out;
     }
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
-      background-size: contain;
-      animation: floatUp 10s infinite;
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px;
+      margin: 30px auto;
+      max-width: 720px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      animation: fadeSlide 2s ease-in-out;
     }
-    @keyframes floatUp {
-      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-      100% { transform: translateY(-10vh) scale(1); opacity: 1; }
+    .card p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #444;
     }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    .typewriter {
-      overflow: hidden;
-      border-right: .15em solid pink;
-      white-space: nowrap;
-      margin: 0 auto;
-      animation: typing 5s steps(40, end), blink-caret .75s step-end infinite;
-    }
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    @keyframes blink-caret {
-      from, to { border-color: transparent }
-      50% { border-color: pink; }
+    .buttons {
+      margin-top: 30px;
     }
     .btn {
-      margin-top: 30px;
       padding: 15px 30px;
-      border: none;
-      border-radius: 30px;
+      margin: 10px;
       font-size: 18px;
+      border: none;
+      border-radius: 50px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s ease-in-out;
     }
-    .yes {
-      background-color: #ff4081;
+    .btn-yes {
+      background: #ff5e8e;
       color: white;
     }
-    .yes:hover {
-      background-color: #e91e63;
+    .btn-yes:hover {
+      background: #ff2e6d;
     }
-    .no {
-      background-color: #f0f0f0;
+    .btn-no {
+      background: #e0e0e0;
       color: #333;
     }
-    .no:hover {
-      background-color: #ccc;
+    .btn-no:hover {
+      background: #bdbdbd;
+    }
+    .heart {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/833/833472.png');
+      background-size: cover;
+      animation: floatHeart 10s linear infinite;
+    }
+    @keyframes floatHeart {
+      0% {transform: translateY(100vh) scale(0.5); opacity: 0;}
+      50% {opacity: 1;}
+      100% {transform: translateY(-100vh) scale(1); opacity: 0;}
+    }
+    @keyframes fadeSlide {
+      0% {opacity: 0; transform: translateY(40px);}
+      100% {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes zoomIn {
+      0% {transform: scale(0.7); opacity: 0;}
+      100% {transform: scale(1); opacity: 1;}
     }
   </style>
 </head>
 <body>
-  <div class="heart-bg" id="heartBg"></div>
-
   <div class="container">
-    <h1 class="text-5xl text-pink-600 mb-6">💌 Gửi Loan 💌</h1>
-    <h2 class="typewriter text-2xl text-gray-800 mb-10 max-w-2xl mx-auto">
-      Có một điều tớ giấu kín rất lâu... hôm nay tớ muốn nói với cậu.
-    </h2>
-
-    <p class="text-xl max-w-2xl mx-auto mb-10">
-      Tớ là Hoài, và tớ... <strong>thật sự thích cậu</strong>. Mỗi lần cậu cười, trái tim tớ như lỡ một nhịp. Dù chỉ là những khoảnh khắc nhỏ khi mình nói chuyện, nhưng nó luôn khiến tớ thấy ấm áp và hạnh phúc. ❤️
-    </p>
-
-    <button class="btn yes" onclick="acceptLove()">Tớ cũng thích cậu 💖</button>
-    <button class="btn no" onclick="rejectLove()">Tớ xin lỗi nhé 🥲</button>
+    <h1>Gửi Loan...</h1>
+    <div class="card">
+      <p>Tớ là <strong>Hoài</strong>. Tớ đã suy nghĩ rất lâu, rất nhiều lần về cảm xúc của mình dành cho cậu.</p>
+      <p>Mỗi nụ cười, mỗi ánh mắt của cậu đều khiến tớ thấy bình yên. Tớ biết, đây không chỉ là cảm nắng. Đây là thích, là chân thành, là nghiêm túc.</p>
+      <p>Nếu cậu đồng ý... tụi mình cùng nhau viết tiếp một chương mới, được không? 💞</p>
+      <div class="buttons">
+        <button class="btn btn-yes" onclick="acceptLove()">Tớ cũng thích cậu 💘</button>
+        <button class="btn btn-no" onclick="rejectLove()">Xin lỗi nha 🥲</button>
+      </div>
+    </div>
   </div>
 
   <audio autoplay loop>
@@ -109,26 +106,25 @@
   </audio>
 
   <script>
-    function spawnHearts() {
-      const heartBg = document.getElementById('heartBg');
+    function acceptLove() {
+      confetti({ particleCount: 300, spread: 80, origin: { y: 0.6 } });
+      alert("💖 Từ nay tụi mình là một đôi thật rồi! 💑");
+    }
+    function rejectLove() {
+      alert("Không sao đâu... Hoài vẫn luôn trân trọng tình cảm này. 🌸");
+    }
+
+    function createHearts() {
       for (let i = 0; i < 30; i++) {
         const heart = document.createElement('div');
-        heart.classList.add('heart');
+        heart.className = 'heart';
         heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = (5 + Math.random() * 5) + 's';
-        heartBg.appendChild(heart);
+        heart.style.animationDuration = (6 + Math.random() * 6) + 's';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        document.body.appendChild(heart);
       }
     }
-    spawnHearts();
-
-    function acceptLove() {
-      confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 } });
-      alert("Yayy! Tụi mình chính thức là một đôi nhé! 💘");
-    }
-
-    function rejectLove() {
-      alert("Không sao đâu, Hoài vẫn luôn trân trọng tình cảm này và quý cậu như một người bạn đặc biệt. 💛");
-    }
+    createHearts();
   </script>
 </body>
 </html>
