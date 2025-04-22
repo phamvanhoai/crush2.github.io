@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lời tỏ tình gửi Loan 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(120deg, #ffe6f0, #fff8e1);
+      font-family: 'Roboto', sans-serif;
+      overflow-x: hidden;
+    }
+    h1, h2 {
+      font-family: 'Great Vibes', cursive;
+    }
+    .container {
+      text-align: center;
+      padding: 60px 20px;
+      animation: fadeIn 3s ease-in-out;
+    }
+    .heart-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
+      background-size: contain;
+      animation: floatUp 10s infinite;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    .typewriter {
+      overflow: hidden;
+      border-right: .15em solid pink;
+      white-space: nowrap;
+      margin: 0 auto;
+      animation: typing 5s steps(40, end), blink-caret .75s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: pink; }
+    }
+    .btn {
+      margin-top: 30px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .yes {
+      background-color: #ff4081;
+      color: white;
+    }
+    .yes:hover {
+      background-color: #e91e63;
+    }
+    .no {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+    .no:hover {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="heart-bg" id="heartBg"></div>
+
+  <div class="container">
+    <h1 class="text-5xl text-pink-600 mb-6">💌 Gửi Loan 💌</h1>
+    <h2 class="typewriter text-2xl text-gray-800 mb-10 max-w-2xl mx-auto">
+      Có một điều tớ giấu kín rất lâu... hôm nay tớ muốn nói với cậu.
+    </h2>
+
+    <p class="text-xl max-w-2xl mx-auto mb-10">
+      Tớ là Hoài, và tớ... <strong>thật sự thích cậu</strong>. Mỗi lần cậu cười, trái tim tớ như lỡ một nhịp. Dù chỉ là những khoảnh khắc nhỏ khi mình nói chuyện, nhưng nó luôn khiến tớ thấy ấm áp và hạnh phúc. ❤️
+    </p>
+
+    <button class="btn yes" onclick="acceptLove()">Tớ cũng thích cậu 💖</button>
+    <button class="btn no" onclick="rejectLove()">Tớ xin lỗi nhé 🥲</button>
+  </div>
+
+  <audio autoplay loop>
+    <source src="https://dl.sndup.net/q93z/tuyetroi.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    function spawnHearts() {
+      const heartBg = document.getElementById('heartBg');
+      for (let i = 0; i < 30; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (5 + Math.random() * 5) + 's';
+        heartBg.appendChild(heart);
+      }
+    }
+    spawnHearts();
+
+    function acceptLove() {
+      confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 } });
+      alert("Yayy! Tụi mình chính thức là một đôi nhé! 💘");
+    }
+
+    function rejectLove() {
+      alert("Không sao đâu, Hoài vẫn luôn trân trọng tình cảm này và quý cậu như một người bạn đặc biệt. 💛");
+    }
+  </script>
+</body>
+</html>
