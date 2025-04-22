@@ -3,128 +3,202 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🌸 Điều Muốn Nói Với Loan 🌸</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <title>Code Tình Yêu Dành Cho Em</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+      background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%);
+      color: #e2e8f0;
+      font-family: 'Courier New', monospace;
       overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .container {
-      text-align: center;
-      padding: 60px 20px;
+      position: relative;
+      z-index: 10;
+      max-width: 800px;
+      padding: 2rem;
     }
-    h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3.5rem;
-      color: #ff4081;
-      animation: zoomIn 1.5s ease-in-out;
-    }
-    .card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 30px;
-      margin: 30px auto;
-      max-width: 720px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      animation: fadeSlide 2s ease-in-out;
-    }
-    .card p {
-      font-size: 1.2rem;
-      line-height: 1.8;
-      color: #444;
-    }
-    .buttons {
-      margin-top: 30px;
-    }
-    .btn {
-      padding: 15px 30px;
-      margin: 10px;
-      font-size: 18px;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-    }
-    .btn-yes {
-      background: #ff5e8e;
-      color: white;
-    }
-    .btn-yes:hover {
-      background: #ff2e6d;
-    }
-    .btn-no {
-      background: #e0e0e0;
-      color: #333;
-    }
-    .btn-no:hover {
-      background: #bdbdbd;
-    }
-    .heart {
+    #code-rain {
       position: fixed;
-      width: 20px;
-      height: 20px;
-      background-image: url('https://cdn-icons-png.flaticon.com/512/833/833472.png');
-      background-size: cover;
-      animation: floatHeart 10s linear infinite;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: rgba(0, 0, 0, 0.7);
     }
-    @keyframes floatHeart {
-      0% {transform: translateY(100vh) scale(0.5); opacity: 0;}
-      50% {opacity: 1;}
-      100% {transform: translateY(-100vh) scale(1); opacity: 0;}
+    .code-line {
+      opacity: 0;
+      color: #f472b6;
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+      white-space: pre;
     }
-    @keyframes fadeSlide {
-      0% {opacity: 0; transform: translateY(40px);}
-      100% {opacity: 1; transform: translateY(0);}
+    .comment {
+      color: #6b7280;
     }
-    @keyframes zoomIn {
-      0% {transform: scale(0.7); opacity: 0;}
-      100% {transform: scale(1); opacity: 1;}
+    .keyword {
+      color: #f472b6;
+      font-weight: bold;
+    }
+    .string {
+      color: #a5b4fc;
+    }
+    .btn-glow {
+      background: linear-gradient(45deg, #db2777, #f472b6);
+      box-shadow: 0 0 20px rgba(244, 114, 182, 0.6);
+      transition: all 0.3s ease;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 40px rgba(244, 114, 182, 0.9);
+      transform: scale(1.1) rotate(3deg);
+    }
+    .btn-secondary {
+      background: linear-gradient(45deg, #334155, #475569);
+      box-shadow: 0 0 20px rgba(71, 85, 105, 0.6);
+    }
+    .btn-secondary:hover {
+      box-shadow: 0 0 40px rgba(71, 85, 105, 0.9);
+      transform: scale(1.1) rotate(-3deg);
+    }
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 50px rgba(244, 114, 182, 0.5);
+      text-align: center;
+      z-index: 100;
+    }
+    #popup.show {
+      display: block;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Gửi Loan...</h1>
-    <div class="card">
-      <p>Tớ là <strong>Hoài</strong>. Tớ đã suy nghĩ rất lâu, rất nhiều lần về cảm xúc của mình dành cho cậu.</p>
-      <p>Mỗi nụ cười, mỗi ánh mắt của cậu đều khiến tớ thấy bình yên. Tớ biết, đây không chỉ là cảm nắng. Đây là thích, là chân thành, là nghiêm túc.</p>
-      <p>Nếu cậu đồng ý... tụi mình cùng nhau viết tiếp một chương mới, được không? 💞</p>
-      <div class="buttons">
-        <button class="btn btn-yes" onclick="acceptLove()">Tớ cũng thích cậu 💘</button>
-        <button class="btn btn-no" onclick="rejectLove()">Xin lỗi nha 🥲</button>
+  <canvas id="code-rain"></canvas>
+  <div class="container mx-auto text-center">
+    <div id="code-editor" class="bg-gray-900 bg-opacity-80 p-8 rounded-xl shadow-2xl">
+      <div id="code-lines">
+        <p class="code-line"><span class="comment">// Tâm thư của một lập trình viên dành cho em</span></p>
+        <p class="code-line"><span class="keyword">class</span> MyHeart {</p>
+        <p class="code-line">  <span class="keyword">constructor</span>() {</p>
+        <p class="code-line">    this.feelings = <span class="string">"Em là bug duy nhất anh không muốn fix."</span>;</p>
+        <p class="code-line">    this.promise = <span class="string">"Mỗi dòng code anh viết, đều vì em."</span>;</p>
+        <p class="code-line">  }</p>
+        <p class="code-line"></p>
+        <p class="code-line">  <span class="keyword">async</span> confess() {</p>
+        <p class="code-line">    <span class="keyword">try</span> {</p>
+        <p class="code-line">      <span class="keyword">let</span> you = <span class="string">"người khiến trái tim anh compile mãi không lỗi"</span>;</p>
+        <p class="code-line">      <span class="keyword">let</span> future = <span class="string">"cùng em, anh muốn build cả thế giới"</span>;</p>
+        <p class="code-line">      <span class="keyword">return</span> <span class="string">"Em, làm người yêu anh nhé?"</span>;</p>
+        <p class="code-line">    } <span class="keyword">catch</span> (rejection) {</p>
+        <p class="code-line">      <span class="keyword">return</span> <span class="string">"Anh sẽ chờ, như một loop vô hạn."</span>;</p>
+        <p class="code-line">    }</p>
+        <p class="code-line">  }</p>
+        <p class="code-line">}</p>
       </div>
+      <div class="mt-8 flex justify-center space-x-6">
+        <button id="acceptBtn" class="btn-glow text-white font-bold py-3 px-8 rounded-full">Run Code Tình Yêu</button>
+        <button id="thinkBtn" class="btn-secondary text-white font-bold py-3 px-8 rounded-full">Debug Sau Nhé</button>
+      </div>
+      <div id="response" class="mt-8 text-xl text-pink-300"></div>
     </div>
   </div>
-
-  <audio autoplay loop>
-    <source src="https://dl.sndup.net/q93z/tuyetroi.mp3" type="audio/mpeg">
-  </audio>
+  <div id="popup">
+    <h2 class="text-2xl font-bold text-pink-300 mb-4">Code Compile Thành Công! 🎉</h2>
+    <p class="text-lg">Em đã chạy hàm <code>acceptLove()</code> trong trái tim anh.</p>
+    <p class="text-lg">Hẹn em ở <code>commit</code> đầu tiên của chúng mình nhé! 😘</p>
+    <button id="closePopup" class="mt-6 bg-pink-600 text-white py-2 px-6 rounded-full hover:bg-pink-700">Đóng</button>
+  </div>
 
   <script>
-    function acceptLove() {
-      confetti({ particleCount: 300, spread: 80, origin: { y: 0.6 } });
-      alert("💖 Từ nay tụi mình là một đôi thật rồi! 💑");
-    }
-    function rejectLove() {
-      alert("Không sao đâu... Hoài vẫn luôn trân trọng tình cảm này. 🌸");
-    }
+    // Code rain effect
+    const canvas = document.getElementById('code-rain');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    function createHearts() {
-      for (let i = 0; i < 30; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = (6 + Math.random() * 6) + 's';
-        heart.style.animationDelay = Math.random() * 5 + 's';
-        document.body.appendChild(heart);
+    const chars = '01<3{}()[]#EmAnhYeuthuong';
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#f472b6';
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars.charAt(Math.floor(Math.random() * chars.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
       }
     }
-    createHearts();
+    setInterval(draw, 33);
+
+    // Animate code lines with GSAP
+    const codeLines = document.querySelectorAll('.code-line');
+    codeLines.forEach((line, index) => {
+      gsap.to(line, {
+        opacity: 1,
+        duration: 0.5,
+        delay: index * 0.2,
+        ease: 'power2.out'
+      });
+    });
+
+    // Button interactions
+    const acceptBtn = document.getElementById('acceptBtn');
+    const thinkBtn = document.getElementById('thinkBtn');
+    const responseDiv = document.getElementById('response');
+    const popup = document.getElementById('popup');
+    const closePopup = document.getElementById('closePopup');
+
+    acceptBtn.addEventListener('click', () => {
+      responseDiv.innerHTML = `<p class="animate-pulse">> Compiling love... Success! 😍</p>`;
+      gsap.to(popup, {
+        display: 'block',
+        scale: 1,
+        opacity: 1,
+        duration: 0.5,
+        ease: 'back.out'
+      });
+    });
+
+    thinkBtn.addEventListener('click', () => {
+      responseDiv.innerHTML = `<p>> Code paused... Anh sẽ chờ em như một <code>setInterval</code> không bao giờ clear! 😊</p>`;
+      popup.style.display = 'none';
+    });
+
+    closePopup.addEventListener('click', () => {
+      gsap.to(popup, {
+        scale: 0.8,
+        opacity: 0,
+        duration: 0.3,
+        onComplete: () => popup.style.display = 'none'
+      });
+    });
+
+    // Responsive canvas
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
   </script>
 </body>
 </html>
