@@ -4,25 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Code Tình Yêu Dành Cho Em</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdn.tailwindcss.com" onerror="console.error('Failed to load Tailwind CSS')"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" onerror="console.error('Failed to load GSAP')"></script>
   <style>
     body {
       margin: 0;
       background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%);
       color: #e2e8f0;
       font-family: 'Courier New', monospace;
-      overflow-x: hidden;
+      overflow-x: hidden !important;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-sizing: border-box;
     }
     .container {
       position: relative;
       z-index: 10;
-      max-width: 800px;
-      padding: 2rem;
+      max-width: 100%;
+      width: 100%;
+      padding: 1rem;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      min-height: 50vh;
     }
     #code-rain {
       position: fixed;
@@ -36,20 +41,15 @@
     .code-line {
       opacity: 0;
       color: #f472b6;
-      font-size: 1.2rem;
-      margin: 0.5rem 0;
-      white-space: pre;
+      font-size: 0.95rem;
+      margin: 0.3rem 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-width: 100%;
     }
-    .comment {
-      color: #6b7280;
-    }
-    .keyword {
-      color: #f472b6;
-      font-weight: bold;
-    }
-    .string {
-      color: #a5b4fc;
-    }
+    .comment { color: #6b7280; }
+    .keyword { color: #f472b6; font-weight: bold; }
+    .string { color: #a5b4fc; }
     .btn-glow {
       background: linear-gradient(45deg, #db2777, #f472b6);
       box-shadow: 0 0 20px rgba(244, 114, 182, 0.6);
@@ -74,21 +74,50 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background: #1e293b;
-      padding: 2rem;
+      padding: 1rem;
       border-radius: 1rem;
       box-shadow: 0 0 50px rgba(244, 114, 182, 0.5);
       text-align: center;
       z-index: 100;
+      width: 85%;
+      max-width: 350px;
+      box-sizing: border-box;
+      visibility: hidden;
     }
     #popup.show {
       display: block;
+      visibility: visible;
+    }
+    .sound-toggle {
+      position: fixed;
+      top: 0.75rem;
+      right: 0.75rem;
+      z-index: 20;
+    }
+    #response, #code-lines {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    @media (max-width: 640px) {
+      .code-line { font-size: 0.85rem; }
+      .container { padding: 0.75rem; }
+      .btn-glow, .btn-secondary { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
+      #code-editor { padding: 1rem; }
+      #code-lines { max-width: 100%; overflow-x: hidden; }
     }
   </style>
 </head>
 <body>
   <canvas id="code-rain"></canvas>
+  <div class="sound-toggle">
+    <button id="soundBtn" class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
+      <svg id="soundIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+      </svg>
+    </button>
+  </div>
   <div class="container mx-auto text-center">
-    <div id="code-editor" class="bg-gray-900 bg-opacity-80 p-8 rounded-xl shadow-2xl">
+    <div id="code-editor" class="bg-gray-900 bg-opacity-80 p-4 rounded-xl shadow-2xl">
       <div id="code-lines">
         <p class="code-line"><span class="comment">// Tâm thư của một lập trình viên dành cho em</span></p>
         <p class="code-line"><span class="keyword">class</span> MyHeart {</p>
@@ -108,96 +137,157 @@
         <p class="code-line">  }</p>
         <p class="code-line">}</p>
       </div>
-      <div class="mt-8 flex justify-center space-x-6">
-        <button id="acceptBtn" class="btn-glow text-white font-bold py-3 px-8 rounded-full">Run Code Tình Yêu</button>
-        <button id="thinkBtn" class="btn-secondary text-white font-bold py-3 px-8 rounded-full">Debug Sau Nhé</button>
+      <div class="mt-4 flex justify-center space-x-4 flex-wrap gap-4">
+        <button id="acceptBtn" class="btn-glow text-white font-bold py-2 px-5 rounded-full">Run Code Tình Yêu</button>
+        <button id="thinkBtn" class="btn-secondary text-white font-bold py-2 px-5 rounded-full">Debug Sau Nhé</button>
       </div>
-      <div id="response" class="mt-8 text-xl text-pink-300"></div>
+      <div id="response" class="mt-6 text-lg text-pink-300"></div>
     </div>
   </div>
   <div id="popup">
-    <h2 class="text-2xl font-bold text-pink-300 mb-4">Code Compile Thành Công! 🎉</h2>
-    <p class="text-lg">Em đã chạy hàm <code>acceptLove()</code> trong trái tim anh.</p>
-    <p class="text-lg">Hẹn em ở <code>commit</code> đầu tiên của chúng mình nhé! 😘</p>
-    <button id="closePopup" class="mt-6 bg-pink-600 text-white py-2 px-6 rounded-full hover:bg-pink-700">Đóng</button>
+    <h2 class="text-xl font-bold text-pink-300 mb-4">Code Compile Thành Công! 🎉</h2>
+    <p class="text-base">Em đã chạy hàm <code>acceptLove()</code> trong trái tim anh.</p>
+    <p class="text-base">Hẹn em ở <code>commit</code> đầu tiên của chúng mình nhé! 😘</p>
+    <button id="closePopup" class="mt-4 bg-pink-600 text-white py-2 px-4 rounded-full hover:bg-pink-700">Đóng</button>
   </div>
 
   <script>
+    console.log('Page loaded, initializing...');
+
     // Code rain effect
-    const canvas = document.getElementById('code-rain');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    try {
+      const canvas = document.getElementById('code-rain');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-    const chars = '01<3{}()[]#EmAnhYeuthuong';
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
+      const chars = '01<3{}()[]#EmAnhYeuthuong';
+      const fontSize = window.innerWidth < 640 ? 10 : 12;
+      const columns = Math.floor(canvas.width / fontSize);
+      const drops = Array(columns).fill(1);
 
-    function draw() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#f472b6';
-      ctx.font = `${fontSize}px monospace`;
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#f472b6';
+        ctx.font = `${fontSize}px monospace`;
 
-      for (let i = 0; i < drops.length; i++) {
-        const text = chars.charAt(Math.floor(Math.random() * chars.length));
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars.charAt(Math.floor(Math.random() * chars.length));
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
         }
-        drops[i]++;
       }
+      setInterval(draw, 33);
+    } catch (e) {
+      console.error('Canvas error:', e);
     }
-    setInterval(draw, 33);
 
     // Animate code lines with GSAP
-    const codeLines = document.querySelectorAll('.code-line');
-    codeLines.forEach((line, index) => {
-      gsap.to(line, {
-        opacity: 1,
-        duration: 0.5,
-        delay: index * 0.2,
-        ease: 'power2.out'
+    try {
+      const codeLines = document.querySelectorAll('.code-line');
+      codeLines.forEach((line, index) => {
+        gsap.to(line, {
+          opacity: 1,
+          duration: 0.5,
+          delay: index * 0.2,
+          ease: 'power2.out'
+        });
       });
-    });
+    } catch (e) {
+      console.error('GSAP error:', e);
+    }
 
-    // Button interactions
-    const acceptBtn = document.getElementById('acceptBtn');
-    const thinkBtn = document.getElementById('thinkBtn');
-    const responseDiv = document.getElementById('response');
-    const popup = document.getElementById('popup');
-    const closePopup = document.getElementById('closePopup');
+    // Sound effects
+    let soundEnabled = true;
+    try {
+      const clickSound = new Audio('https://freesound.org/data/previews/171/171671_2435923-lq.mp3');
+      const successSound = new Audio('https://freesound.org/data/previews/100/100610_1270766-lq.mp3');
+      clickSound.volume = 0.5;
+      successSound.volume = 0.5;
 
-    acceptBtn.addEventListener('click', () => {
-      responseDiv.innerHTML = `<p class="animate-pulse">> Compiling love... Success! 😍</p>`;
-      gsap.to(popup, {
-        display: 'block',
-        scale: 1,
-        opacity: 1,
-        duration: 0.5,
-        ease: 'back.out'
+      const soundBtn = document.getElementById('soundBtn');
+      const soundIcon = document.getElementById('soundIcon');
+      soundBtn.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        soundIcon.innerHTML = soundEnabled
+          ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>`
+          : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM16 9l-6 6m0-6l6 6"></path>`;
       });
-    });
 
-    thinkBtn.addEventListener('click', () => {
-      responseDiv.innerHTML = `<p>> Code paused... Anh sẽ chờ em như một <code>setInterval</code> không bao giờ clear! 😊</p>`;
-      popup.style.display = 'none';
-    });
+      // Button interactions
+      const acceptBtn = document.getElementById('acceptBtn');
+      const thinkBtn = document.getElementById('thinkBtn');
+      const responseDiv = document.getElementById('response');
+      const popup = document.getElementById('popup');
+      const closePopup = document.getElementById('closePopup');
 
-    closePopup.addEventListener('click', () => {
-      gsap.to(popup, {
-        scale: 0.8,
-        opacity: 0,
-        duration: 0.3,
-        onComplete: () => popup.style.display = 'none'
+      responseDiv.innerHTML = ''; // Clear response
+
+      acceptBtn.addEventListener('click', () => {
+        if (soundEnabled) clickSound.play();
+        responseDiv.innerHTML = `<p class="animate-pulse">> Compiling love... Success! 😍</p>`;
+        gsap.to(popup, {
+          display: 'block',
+          visibility: 'visible',
+          scale: 1,
+          opacity: 1,
+          duration: 0.5,
+          ease: 'back.out',
+          onStart: () => { if (soundEnabled) successSound.play(); }
+        });
       });
-    });
+
+      thinkBtn.addEventListener('click', () => {
+        if (soundEnabled) clickSound.play();
+        responseDiv.innerHTML = `<p>> Code paused... Anh sẽ chờ em như một <code>setInterval</code> không bao giờ clear! 😊</p>`;
+        gsap.to(popup, {
+          display: 'none',
+          visibility: 'hidden',
+          scale: 0.8,
+          opacity: 0,
+          duration: 0.3
+        });
+      });
+
+      closePopup.addEventListener('click', () => {
+        if (soundEnabled) clickSound.play();
+        gsap.to(popup, {
+          scale: 0.8,
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => {
+            popup.style.display = 'none';
+            popup.style.visibility = 'hidden';
+          }
+        });
+      });
+    } catch (e) {
+      console.error('Sound or button error:', e);
+    }
+
+    // Prevent duplicate content
+    try {
+      const codeLinesContainer = document.getElementById('code-lines');
+      if (codeLinesContainer.children.length > 17) {
+        codeLinesContainer.innerHTML = codeLinesContainer.innerHTML;
+      }
+    } catch (e) {
+      console.error('Code lines check error:', e);
+    }
 
     // Responsive canvas
     window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      try {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        ctx.font = `${window.innerWidth < 640 ? 10 : 12}px monospace`;
+      } catch (e) {
+        console.error('Resize error:', e);
+      }
     });
   </script>
 </body>
